@@ -32,7 +32,7 @@ export class MCPClient {
       this.transport = new StdioClientTransport({
         command: 'node',
         args: ['dist/mcp/server.js'],
-        env: process.env,
+        env: process.env as Record<string, string>,
       });
 
       await this.client.connect(this.transport);
