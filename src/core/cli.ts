@@ -285,8 +285,16 @@ export async function configCommand(options: any): Promise<void> {
     console.log(chalk.cyan.bold('\n⚙️  Configuração Atual:\n'));
     console.log(chalk.gray('─'.repeat(50)));
     console.log(chalk.bold('API Keys:'));
+    
+    if (config.useGroq) {
+      console.log(chalk.green.bold('  🚀 Usando Groq (GRATUITO!)'));
+      console.log(`  Groq API Key: ${config.groqApiKey ? chalk.green('✓ Configurada') : chalk.red('✗ Não configurada')}`);
+    } else {
+      console.log(chalk.yellow('  Usando Anthropic (Pago)'));
+      console.log(`  Anthropic API Key: ${config.anthropicApiKey ? chalk.green('✓ Configurada') : chalk.red('✗ Não configurada')}`);
+    }
+    
     console.log(`  Emergent LLM Key: ${config.emergentLlmKey ? chalk.green('✓ Configurada') : chalk.red('✗ Não configurada')}`);
-    console.log(`  Anthropic API Key: ${config.anthropicApiKey ? chalk.green('✓ Configurada') : chalk.red('✗ Não configurada')}`);
     console.log();
     console.log(chalk.bold('N8N:'));
     console.log(`  Enabled: ${config.n8nEnabled ? chalk.green('Sim') : chalk.yellow('Não (usando mock)')}`);
