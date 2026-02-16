@@ -167,31 +167,43 @@ class EmergentMCPServer {
 
         switch (name) {
           case 'read_files':
-            result = await mcpTools.readFiles(args.patterns, args.baseDir);
+            result = await mcpTools.readFiles(
+              (args as any)?.patterns || [],
+              (args as any)?.baseDir
+            );
             break;
 
           case 'write_code':
             result = await mcpTools.writeCode(
-              args.filePath,
-              args.content,
-              args.createBackup
+              (args as any)?.filePath || '',
+              (args as any)?.content || '',
+              (args as any)?.createBackup
             );
             break;
 
           case 'execute_command':
-            result = await mcpTools.executeCommand(args.command, args.cwd);
+            result = await mcpTools.executeCommand(
+              (args as any)?.command || '',
+              (args as any)?.cwd
+            );
             break;
 
           case 'analyze_project':
-            result = await mcpTools.analyzeProject(args.rootDir);
+            result = await mcpTools.analyzeProject((args as any)?.rootDir);
             break;
 
           case 'git_operations':
-            result = await mcpTools.gitOperations(args.operation, args.options);
+            result = await mcpTools.gitOperations(
+              (args as any)?.operation || 'status',
+              (args as any)?.options
+            );
             break;
 
           case 'test_code':
-            result = await mcpTools.testCode(args.testCommand, args.cwd);
+            result = await mcpTools.testCode(
+              (args as any)?.testCommand,
+              (args as any)?.cwd
+            );
             break;
 
           default:
