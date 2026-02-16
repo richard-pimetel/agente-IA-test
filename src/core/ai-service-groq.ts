@@ -65,7 +65,7 @@ export class AIServiceGroq {
     userMessage: string
   ): Promise<AIResponse> {
     const completion = await this.groq.chat.completions.create({
-      model: 'llama-3.1-70b-versatile', // Modelo GRATUITO e poderoso!
+      model: 'llama-3.3-70b-versatile', // Modelo atual GRATUITO!
       messages: [
         { role: 'system', content: systemMessage },
         { role: 'user', content: userMessage },
