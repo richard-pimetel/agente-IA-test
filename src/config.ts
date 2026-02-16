@@ -6,6 +6,8 @@ dotenv.config();
 export interface Config {
   emergentLlmKey: string;
   anthropicApiKey: string;
+  groqApiKey: string;
+  useGroq: boolean;
   n8nEnabled: boolean;
   n8nApiKey: string;
   n8nWebhookUrl: string;
