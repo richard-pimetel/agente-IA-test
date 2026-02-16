@@ -21,6 +21,8 @@ export interface Config {
 export const config: Config = {
   emergentLlmKey: process.env.EMERGENT_LLM_KEY || '',
   anthropicApiKey: process.env.ANTHROPIC_API_KEY || process.env.EMERGENT_LLM_KEY || '',
+  groqApiKey: process.env.GROQ_API_KEY || '',
+  useGroq: process.env.USE_GROQ === 'true' || !!process.env.GROQ_API_KEY,
   n8nEnabled: process.env.N8N_ENABLED === 'true',
   n8nApiKey: process.env.N8N_API_KEY || '',
   n8nWebhookUrl: process.env.N8N_WEBHOOK_URL || 'http://localhost:5678/webhook',
