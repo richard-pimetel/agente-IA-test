@@ -132,6 +132,14 @@ function App() {
     setShowHistory(false);
   };
 
+  // Limpar histórico
+  const clearHistory = () => {
+    if (window.confirm('Deseja limpar todo o histórico?')) {
+      setHistory([]);
+      localStorage.removeItem('emergent-history');
+    }
+  };
+
   return (
     <div className="app">
       {/* Header */}
