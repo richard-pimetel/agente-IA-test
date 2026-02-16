@@ -214,7 +214,11 @@ ${prompt}
   async useMCPTool(toolName: string, args: any): Promise<any> {
     try {
       const result = await this.mcpClient.callTool(toolName, args);
-      return JSON.parse(result.content[0].text);
+      const firstContent = result.content[0];
+      if (firstContent.type === 'text') {
+        return JSON.parse(firstContent.text);
+      }
+      throw new Error('Resposta MCP inválida');
     } catch (error: any) {
       throw new Error(`Erro ao usar ferramenta MCP: ${error.message}`);
     }
