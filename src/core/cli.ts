@@ -3,13 +3,15 @@ import chalk from 'chalk';
 import ora from 'ora';
 import boxen from 'boxen';
 import { AIService } from './ai-service';
+import { AIServiceGroq } from './ai-service-groq';
 import { FileManager } from './file-manager';
 import { ContextBuilder } from './context-builder';
 import { N8NIntegration } from '../n8n/integration';
 import { config } from '../config';
 import { promises as fs } from 'fs';
 
-const aiService = new AIService();
+// Seleciona AI Service baseado na configuração
+const aiService = config.useGroq ? new AIServiceGroq() : new AIService();
 const fileManager = new FileManager();
 const contextBuilder = new ContextBuilder();
 const n8nIntegration = new N8NIntegration();
