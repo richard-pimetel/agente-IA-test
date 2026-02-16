@@ -161,7 +161,10 @@ function App() {
           <aside className="sidebar">
             <div className="sidebar-header">
               <h2>📚 Histórico</h2>
-              <button onClick={() => setShowHistory(false)}>✕</button>
+              <div>
+                <button onClick={clearHistory} title="Limpar" style={{marginRight: '8px'}}>🗑️</button>
+                <button onClick={() => setShowHistory(false)}>✕</button>
+              </div>
             </div>
             <div className="history-list">
               {history.length === 0 ? (
