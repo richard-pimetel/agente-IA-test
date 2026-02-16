@@ -132,7 +132,7 @@ export async function generateCommand(prompt: string, options: any): Promise<voi
 /**
  * Comando: emergent review
  */
-export async function reviewCommand(options: any): Promise<void> {
+export async function reviewCommand(_options: any): Promise<void> {
   console.log(chalk.cyan.bold('\n🔍 Executando code review...\n'));
 
   const spinner = ora('Analisando código...').start();
