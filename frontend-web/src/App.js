@@ -23,20 +23,35 @@ function App() {
     scrollToBottom();
   }, [messages]);
 
-  // Carregar histórico
+  // Carregar histórico do localStorage
   useEffect(() => {
     loadHistory();
   }, []);
 
-  const loadHistory = async () => {
+  const loadHistory = () => {
     try {
-      const response = await axios.get(`${API_URL}/history?limit=10`);
-      if (response.data.success) {
-        setHistory(response.data.history);
+      const saved = localStorage.getItem('emergent-history');
+      if (saved) {
+        setHistory(JSON.parse(saved));
       }
     } catch (error) {
-      console.log('Histórico indisponível');
+      console.log('Erro ao carregar histórico');
     }
+  };
+
+  // Salvar no localStorage
+  const saveToHistory = (prompt, code, language) => {
+    const newItem = {
+      _id: Date.now().toString(),
+      prompt,
+      code,
+      language,
+      timestamp: new Date().toISOString()
+    };
+
+    const updatedHistory = [newItem, ...history].slice(0, 20); // Máximo 20
+    setHistory(updatedHistory);
+    localStorage.setItem('emergent-history', JSON.stringify(updatedHistory));
   };
 
   const handleSubmit = async (e) => {
