@@ -138,8 +138,6 @@ export async function reviewCommand(options: any): Promise<void> {
   const spinner = ora('Analisando código...').start();
 
   try {
-    let targetPath = options.path || '.';
-
     // Encontra arquivos de código
     const files = await contextBuilder.findFiles('**/*.{js,ts,py,go,rs}');
 
