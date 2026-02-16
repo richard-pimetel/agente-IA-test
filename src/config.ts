@@ -36,7 +36,13 @@ export const config: Config = {
 export function validateConfig(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
-  if (!config.anthropicApiKey) {
+  // Se estiver usando Groq, valida key do Groq
+  if (config.useGroq && !config.groqApiKey) {
+    errors.push('USE_GROQ=true mas GROQ_API_KEY não configurada');
+  }
+
+  // Se não estiver usando Groq, valida Anthropic
+  if (!config.useGroq && !config.anthropicApiKey) {
     errors.push('ANTHROPIC_API_KEY ou EMERGENT_LLM_KEY não configurada');
   }
 
