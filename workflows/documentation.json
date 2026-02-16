@@ -1,0 +1,77 @@
+{
+  "name": "Auto Documentation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "documentation",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-2",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const project = items[0].json.project;\nconst format = items[0].json.format || 'markdown';\n\nreturn [{ json: { project, format } }];"
+      },
+      "id": "function-2",
+      "name": "Parse Input",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "model": "claude-sonnet-4-5-20250929",
+        "prompt": "Gere documentação completa do projeto em formato {{ $json.format }}",
+        "options": {
+          "maxTokens": 4096
+        }
+      },
+      "id": "ai-2",
+      "name": "Claude Generate Docs",
+      "type": "n8n-nodes-anthropic.claudeAI",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "filePath": "README.md",
+        "binaryData": false,
+        "fileContent": "={{ $json.documentation }}"
+      },
+      "id": "file-1",
+      "name": "Update README",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { success: true, content: $json.documentation } }}"
+      },
+      "id": "response-2",
+      "name": "Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1050, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{ "node": "Parse Input", "type": "main", "index": 0 }]] },
+    "Parse Input": { "main": [[{ "node": "Claude Generate Docs", "type": "main", "index": 0 }]] },
+    "Claude Generate Docs": { "main": [[{ "node": "Update README", "type": "main", "index": 0 }]] },
+    "Update README": { "main": [[{ "node": "Response", "type": "main", "index": 0 }]] }
+  },
+  "active": true,
+  "settings": {
+    "timezone": "America/Sao_Paulo"
+  },
+  "tags": ["documentation", "automation"]
+}

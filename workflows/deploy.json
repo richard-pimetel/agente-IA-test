@@ -1,0 +1,94 @@
+{
+  "name": "Deploy Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "deploy",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-3",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "command": "npm run build"
+      },
+      "id": "exec-1",
+      "name": "Build Project",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.skipTests }}",
+              "value2": false
+            }
+          ]
+        }
+      },
+      "id": "if-2",
+      "name": "IF Run Tests",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "command": "npm test"
+      },
+      "id": "exec-2",
+      "name": "Run Tests",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [850, 200]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Simula deploy\nreturn [{ json: { success: true, environment: 'production' } }];"
+      },
+      "id": "function-3",
+      "name": "Deploy to Production",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { success: true, environment: $json.environment, timestamp: new Date().toISOString() } }}"
+      },
+      "id": "response-3",
+      "name": "Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1250, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{ "node": "Build Project", "type": "main", "index": 0 }]] },
+    "Build Project": { "main": [[{ "node": "IF Run Tests", "type": "main", "index": 0 }]] },
+    "IF Run Tests": { 
+      "main": [
+        [{ "node": "Run Tests", "type": "main", "index": 0 }],
+        [{ "node": "Deploy to Production", "type": "main", "index": 0 }]
+      ]
+    },
+    "Run Tests": { "main": [[{ "node": "Deploy to Production", "type": "main", "index": 0 }]] },
+    "Deploy to Production": { "main": [[{ "node": "Response", "type": "main", "index": 0 }]] }
+  },
+  "active": true,
+  "settings": {
+    "timezone": "America/Sao_Paulo",
+    "executionTimeout": 300
+  },
+  "tags": ["deploy", "ci-cd", "automation"]
+}

@@ -1,0 +1,82 @@
+{
+  "name": "Code Review Automático",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "code-review",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const files = items[0].json.files;\nconst issues = [];\n\nfor (const file of files) {\n  // Análise de qualidade\n  if (file.includes('console.log')) {\n    issues.push({ file, issue: 'console.log em produção' });\n  }\n}\n\nreturn [{ json: { files, issues } }];"
+      },
+      "id": "function-1",
+      "name": "Analyze Code",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "model": "claude-sonnet-4-5-20250929",
+        "prompt": "Analise o código e forneça sugestões de melhoria",
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "id": "ai-1",
+      "name": "Claude AI Review",
+      "type": "n8n-nodes-anthropic.claudeAI",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.issues.length }}",
+              "operation": "larger",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "id": "if-1",
+      "name": "IF Issues Found",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { success: true, issues: $json.issues, summary: $json.summary } }}"
+      },
+      "id": "response-1",
+      "name": "Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1050, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{ "node": "Analyze Code", "type": "main", "index": 0 }]] },
+    "Analyze Code": { "main": [[{ "node": "Claude AI Review", "type": "main", "index": 0 }]] },
+    "Claude AI Review": { "main": [[{ "node": "IF Issues Found", "type": "main", "index": 0 }]] },
+    "IF Issues Found": { "main": [[{ "node": "Response", "type": "main", "index": 0 }]] }
+  },
+  "active": true,
+  "settings": {
+    "timezone": "America/Sao_Paulo"
+  },
+  "tags": ["code-quality", "automation"]
+}
