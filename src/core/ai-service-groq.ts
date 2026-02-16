@@ -107,7 +107,6 @@ export class AIServiceGroq {
     });
 
     let fullContent = '';
-    let totalTokens = { prompt: 0, completion: 0 };
 
     for await (const chunk of stream) {
       const content = chunk.choices[0]?.delta?.content || '';
@@ -115,19 +114,13 @@ export class AIServiceGroq {
         process.stdout.write(content);
         fullContent += content;
       }
-
-      // Groq envia usage no último chunk
-      if (chunk.usage) {
-        totalTokens.prompt = chunk.usage.prompt_tokens || 0;
-        totalTokens.completion = chunk.usage.completion_tokens || 0;
-      }
     }
 
     return {
       content: fullContent,
       usage: {
-        inputTokens: totalTokens.prompt,
-        outputTokens: totalTokens.completion,
+        inputTokens: 0,
+        outputTokens: 0,
       },
     };
   }
