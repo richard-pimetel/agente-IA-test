@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "emergent-ai": {
+      "command": "node",
+      "args": ["dist/mcp/server.js"],
+      "env": {
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+        "EMERGENT_LLM_KEY": "${EMERGENT_LLM_KEY}"
+      },
+      "description": "Emergent AI MCP Server para geração de código",
+      "capabilities": {
+        "tools": true,
+        "resources": true,
+        "prompts": false
+      }
+    }
+  },
+  "settings": {
+    "timeout": 120000,
+    "retries": 3,
+    "logLevel": "info"
+  }
+}
