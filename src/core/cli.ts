@@ -8,7 +8,6 @@ import { ContextBuilder } from './context-builder';
 import { N8NIntegration } from '../n8n/integration';
 import { config } from '../config';
 import { promises as fs } from 'fs';
-import path from 'path';
 
 const aiService = new AIService();
 const fileManager = new FileManager();
