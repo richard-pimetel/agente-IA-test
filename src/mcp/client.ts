@@ -53,9 +53,10 @@ export class MCPClient {
   /**
    * Chama uma ferramenta MCP
    */
-  async callTool(name: string, args: any): Promise<CallToolResult> {
+  async callTool(name: string, args: any): Promise<any> {
     await this.connect();
-    return await this.client.callTool({ name, arguments: args });
+    const result = await this.client.callTool({ name, arguments: args });
+    return result;
   }
 
   /**
