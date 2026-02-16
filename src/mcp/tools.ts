@@ -293,9 +293,9 @@ export async function testCode(
 ): Promise<ToolResult> {
   try {
     // Detecta framework de teste
-    let command = testCommand;
+    let command = testCommand || 'npm test';
     
-    if (!command) {
+    if (!testCommand) {
       const packageJsonPath = path.join(cwd, 'package.json');
       try {
         const packageJson = JSON.parse(await fs.readFile(packageJsonPath, 'utf-8'));
