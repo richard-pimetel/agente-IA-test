@@ -2,7 +2,7 @@
 
 ## Visão Geral
 
-Projeto TypeScript. 18 arquivos.
+Projeto TypeScript. 21 arquivos.
 
 ## Tecnologias
 
@@ -12,13 +12,13 @@ Projeto TypeScript. 18 arquivos.
 
 ## Estrutura do Projeto
 
-Total de arquivos: 18
+Total de arquivos: 21
 
-- **./** (5 arquivos)
+- **./** (8 arquivos)
 - **src/** (2 arquivos)
 - **workflows/** (3 arquivos)
-- **src/mcp/** (3 arquivos)
 - **src/core/** (4 arquivos)
+- **src/mcp/** (3 arquivos)
 - **src/n8n/** (1 arquivos)
 
 ## Dependências
@@ -63,11 +63,11 @@ npm start
 
 ## Arquivos Recentes
 
+- DEMO.sh
+- QUICKSTART.md
+- README-generated.markdown
 - src/core/cli.ts
 - src/mcp/client.ts
-- src/mcp/tools.ts
-- src/mcp/server.ts
-- src/core/ai-service.ts
 
 ---
 
