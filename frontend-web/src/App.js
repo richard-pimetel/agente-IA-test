@@ -83,7 +83,9 @@ function App() {
       };
 
       setMessages(prev => [...prev, aiMessage]);
-      loadHistory(); // Atualizar histórico
+      
+      // Salvar no localStorage (navegador)
+      saveToHistory(input, response.data.code, response.data.language);
 
     } catch (error) {
       const errorMessage = {
