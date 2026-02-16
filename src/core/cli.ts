@@ -194,7 +194,7 @@ export async function docCommand(options: any): Promise<void> {
 
     spinner.succeed('Documentação gerada');
 
-    const outputFile = `README-generated.${options.format}`;
+    const outputFile = `README-generated.${options.format || 'markdown'}`;
     await fileManager.writeFile(outputFile, docResult.content);
 
     console.log(chalk.green(`\n✅ Documentação salva em: ${outputFile}\n`));
